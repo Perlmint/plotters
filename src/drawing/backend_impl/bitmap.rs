@@ -675,7 +675,7 @@ impl PixelFormat for BGRXPixel {
                         let ptr = p as *mut [u8; 8] as *mut u64;
                         unsafe {
                             let d: u64 = std::mem::transmute([
-                                b, g, r, 0, b, g, r, 0, // QW1
+                                b, g, r, p[3], b, g, r, p[7], // QW1
                             ]);
                             *ptr = d;
                         }
