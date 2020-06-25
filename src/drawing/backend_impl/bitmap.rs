@@ -638,14 +638,28 @@ impl PixelFormat for BGRXPixel {
                     let count = (x1 - x0 + 1) as usize;
                     dst[(start * Self::PIXEL_SIZE)..((start + count) * Self::PIXEL_SIZE)]
                         .iter_mut()
-                        .for_each(|e| *e = r);
+                        .enumerate()
+                        .for_each(|(i, e)|{
+                            if i % Self::PIXEL_SIZE != Self::PIXEL_SIZE - 1 {
+                                *e = r
+                            } else {
+                                *e = 255
+                            }
+                        });
                 }
             } else {
                 // If the entire memory block is going to be filled, just use single memset
                 dst[Self::PIXEL_SIZE * (y0 * w as i32) as usize
                     ..((y1 + 1) * w as i32) as usize * Self::PIXEL_SIZE]
                     .iter_mut()
-                    .for_each(|e| *e = r);
+                    .enumerate()
+                    .for_each(|(i, e)| {
+                        if i % Self::PIXEL_SIZE != Self::PIXEL_SIZE - 1 {
+                            *e = r
+                        } else {
+                            *e = 255
+                        }
+                    });
             }
         } else {
             let count = (x1 - x0 + 1) as usize;
