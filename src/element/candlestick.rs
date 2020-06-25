@@ -35,19 +35,21 @@ impl<X: Clone, Y: PartialOrd> CandleStick<X, Y> {
     /// let candlestick = CandleStick::new(Local::now(), 130.0600, 131.3700, 128.8300, 129.1500, &GREEN, &RED, 15);
     /// ```
     #[allow(clippy::too_many_arguments)]
-    pub fn new<GS: Into<ShapeStyle>, LS: Into<ShapeStyle>>(
+    pub fn new<GS: Into<ShapeStyle>, NS: Into<ShapeStyle>, LS: Into<ShapeStyle>>(
         x: X,
         open: Y,
         high: Y,
         low: Y,
         close: Y,
         gain_style: GS,
+        nerutral_style: NS,
         loss_style: LS,
         width: u32,
     ) -> Self {
         Self {
             style: match open.partial_cmp(&close) {
                 Some(Ordering::Less) => gain_style.into(),
+                Some(Ordering::Equal) => nerutral_style.into(),
                 _ => loss_style.into(),
             },
             width,
